@@ -19,14 +19,16 @@ router.get('/', (req, res) => {
 
 router.post('/send', (req, res) => {
 	//	To access POST variable use req.body() methods
-	console.log(req.body.from);
-	console.log(req.body.to);
 	let myMailGun = new MyMailGun(req.body.from, req.body.to, req.body.subject, req.body.text);
-	let result = myMailGun.sendmailgun();
-	console.log(result);
-	
-	res.status(200);
-	res.json({ status: 200, message: "Very Good"});
+	myMailGun.sendmailgun(function(result){
+		console.log("result of sendmail:"+result);
+		const obj = JSON.parse(result);
+		res.status(obj.code);
+		res.json({status: obj.code, message: obj.message.message});
+	});
+		
+	// res.status(200);
+	// res.json({ status: 200, message: "Very Good"});
 });
 
 //	add route in the Express app.

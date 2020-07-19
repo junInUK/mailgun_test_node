@@ -13,7 +13,7 @@ class MyMailGun {
         this.text = text;
     }
 
-    sendmailgun(){
+    sendmailgun(callback){
         let result = null;
         const data = {
             from: this.from,
@@ -24,15 +24,21 @@ class MyMailGun {
         this.mg.messages().send(data, function (error, body) {
             console.log(body);
             if(error){
-                console.log("error!");
-                result = JSON.stringify({ code: 500, message: json(error)});
+                console.log(error);
+                result = JSON.stringify({ code: 500, message: error});
+                if(callback){
+                    callback(result);
+                }
             }else{
                 console.log("no error!");
-                result = JSON.stringify({ code: 200, message: json(body)});
+                result = JSON.stringify({ code: 200, message: body});
+                console.log("after sendmail result:"+result);
+                if(callback){
+                    callback(result);
+                }
             }
         })
-        return result;
-
+    
     }
 }
 
