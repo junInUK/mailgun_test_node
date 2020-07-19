@@ -25,12 +25,13 @@ class MyMailGun {
             console.log(body);
             if(error){
                 console.log("error!");
+                result = JSON.stringify({ code: 500, message: json(error)});
             }else{
                 console.log("no error!");
+                result = JSON.stringify({ code: 200, message: json(body)});
             }
-//                result = JSON.stringify({ code: 200, message: json(body)});
-        
         })
+        return result;
 
     }
 }
